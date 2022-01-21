@@ -10,19 +10,19 @@ public class Principal extends JFrame {
 
     public static String funcion = "";
 
-    private Panel panel;
+    private Grafica grafica;
     private JTextField txtEntrada;
     private JButton btnGraficar;
-
-    private JTextField txtZoom;
-    private JButton btnZoom;
+    
+    private JSpinner jpDespX, jpDespY, jpZoom;
+    
 
     public Principal() {
         setTitle("Graficador de funciones");
         setLayout(new BorderLayout());
 
-        panel = new Panel();
-        add(panel, BorderLayout.CENTER);
+        grafica = new Grafica();
+        add(grafica, BorderLayout.CENTER);
 
         txtEntrada = new JTextField();
         btnGraficar = new JButton("Graficar");
@@ -31,7 +31,7 @@ public class Principal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 funcion = txtEntrada.getText();
-                panel.repaint();      
+                grafica.repaint();      
             }
         });
 
@@ -43,7 +43,10 @@ public class Principal extends JFrame {
 
         add(panelSur, BorderLayout.SOUTH);
         
-        pack();
+        //Agregar controles para desplazamiento y zoom
+        
+        
+        setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
