@@ -10,18 +10,15 @@ public class Principal extends JFrame {
 
     public static String funcion = "";
 
-    private Panel panel;
+    private Grafica panel;
     private JTextField txtEntrada;
     private JButton btnGraficar;
-
-    private JTextField txtZoom;
-    private JButton btnZoom;
 
     public Principal() {
         setTitle("Graficador de funciones");
         setLayout(new BorderLayout());
 
-        panel = new Panel();
+        panel = new Grafica();
         add(panel, BorderLayout.CENTER);
 
         txtEntrada = new JTextField();

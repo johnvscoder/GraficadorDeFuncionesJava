@@ -7,7 +7,7 @@ import matematicas.*;
 
 import java.awt.event.*;
 
-public class Panel extends JPanel {
+public class Grafica extends JPanel {
 
     public static final double DELTA = 1.0;
 
@@ -15,49 +15,6 @@ public class Panel extends JPanel {
     //del sistemas de coordenadas
     //En otras palabras, una unidad de longitud es igual a 20 pixeles
     public static final double ESCALA = 20.0;
-
-    //posicion actual del mouse en el panel (con respecto a la esquina superior izquierda)
-    //El eje +y se considera hacia abajo (igual que en un jpanel)
-    private int x, y;
-
-    //posicion anterior del mouse en el panel (con respecto a la esquina superior izquierda)
-    //El eje +y se considera hacia abajo (igual que en un jpanel)
-    private int xPrevio, yPrevio;
-
-    //posicion del sistema de coordenadas rectagulares con respecto al centro del panel
-    //aqui se considera el eje +y hacia arriba
-    //Las unidades de posX y posY no son pixeles, sino las unidades de longitud 
-    //del sistema de coordenadas
-    double posX, posY;
-    
-    private double zoom = 100;
-
-    public Panel() {
-        setPreferredSize(new Dimension(500, 500));
-
-        addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                x = e.getX();
-                y = e.getY();
-            }
-        });
-
-        addMouseMotionListener(new MouseAdapter() {
-
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                xPrevio = x;
-                yPrevio = y;
-                x = e.getX();
-                y = e.getY();
-
-                posX -= (x - xPrevio) / 20.0;
-                posY -= -(y - yPrevio) / 20.0;
-            }
-        });
-    }
 
     @Override
     public void paintComponent(Graphics g) {
