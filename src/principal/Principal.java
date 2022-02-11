@@ -10,7 +10,7 @@ public class Principal extends JFrame {
 
     public static String funcion = "";
 
-    private Grafica panel;
+    private Grafica grafica;
     private JTextField txtEntrada;
     private JButton btnGraficar;
 
@@ -18,8 +18,8 @@ public class Principal extends JFrame {
         setTitle("Graficador de funciones");
         setLayout(new BorderLayout());
 
-        panel = new Grafica();
-        add(panel, BorderLayout.CENTER);
+        grafica = new Grafica();
+        add(grafica, BorderLayout.CENTER);
 
         txtEntrada = new JTextField();
         btnGraficar = new JButton("Graficar");
@@ -28,7 +28,7 @@ public class Principal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 funcion = txtEntrada.getText();
-                panel.repaint();      
+                grafica.repaint();      
             }
         });
 
@@ -40,7 +40,7 @@ public class Principal extends JFrame {
 
         add(panelSur, BorderLayout.SOUTH);
         
-        pack();
+        setSize(new Dimension(500, 500));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
