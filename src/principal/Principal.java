@@ -20,7 +20,7 @@ public class Principal extends JFrame {
         setTitle("Graficador de funciones");
 
         JLayeredPane panel = new JLayeredPane();
-        grafica = new Grafica();
+        grafica = new Grafica(this);
         btnZoomMas = new JButton("+");
         btnZoomMenos = new JButton("-");
         
@@ -61,7 +61,7 @@ public class Principal extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       
-        grafica.setSize(getWidth(), getHeight());
+        grafica.setSize(getSize());
         
         setVisible(true);
     }
