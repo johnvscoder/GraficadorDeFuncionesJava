@@ -6,6 +6,7 @@ import java.awt.*;
 import matematicas.*;
 
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 
 public class Grafica extends JPanel {
 	
@@ -19,14 +20,22 @@ public class Grafica extends JPanel {
 		g.setColor(fondo);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
+	
 		//Pintar ejes
 		g.setColor(frente);
 		//Eje x
-		g.drawRect(0, (int) (getHeight() / 2.0 + posY * zoomY), 
-				getWidth(), (int) (getHeight() / 2.0 + posY * zoomY));
+		g.drawLine(0, (int) (getHeight() / 2.0 + posY * zoomY * UNIT), 
+				getWidth(), (int) (getHeight() / 2.0 + posY * zoomY * UNIT));
 		//Eje y
-		g.drawRect((int) (getWidth() / 2.0 - posX * zoomX), 0,
-				(int) (getWidth() / 2.0 - posX * zoomX), getHeight());
+		g.drawLine(0, -20, 0, 20);
+		
+		
+		
+		//Fin del codigo para pintar
+
+
+		
+
 		
 		
 		
