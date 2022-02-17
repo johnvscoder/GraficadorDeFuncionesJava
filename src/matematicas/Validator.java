@@ -10,7 +10,7 @@ public class Validator {
     private static final int Cz = 122;*/
 
     public static final String[] functions = {
-            "sqrt", "sqrt3", "exp", "exp10",
+            "abs", "sqrt", "sqrt3", "exp", "exp10",
             "log", "log10",
             "sin", "cos", "tan", "sec", "csc", "cot",
             "asin", "acos", "atan"};

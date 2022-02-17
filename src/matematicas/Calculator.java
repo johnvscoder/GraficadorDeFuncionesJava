@@ -64,6 +64,9 @@ public class Calculator {
         double number = 0.0;
         function = function.toLowerCase();
         switch(function) {
+        	case "abs":
+        		number = Math.abs(argument);
+        		break;
             case "sqrt":
                 number = Math.sqrt(argument);
                 break;

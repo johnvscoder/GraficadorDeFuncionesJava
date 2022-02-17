@@ -14,6 +14,8 @@ public class Principal extends JFrame {
     private JButton btnZoomMas, btnZoomMenos;
     private JTextField txtEntrada;
     private JButton btnGraficar;
+    
+    private JList funciones;
 
     public Principal() {
     	setLayout(new BorderLayout());
@@ -22,7 +24,23 @@ public class Principal extends JFrame {
         JLayeredPane panel = new JLayeredPane();
         grafica = new Grafica(this);
         btnZoomMas = new JButton("+");
+        btnZoomMas.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				grafica.aumentarZoom(1);
+				grafica.repaint();
+			}
+		});
         btnZoomMenos = new JButton("-");
+        btnZoomMenos.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				grafica.aumentarZoom(-1);
+				grafica.repaint();
+			}
+		});
         
         
         JPanel panelZoom = new JPanel();
@@ -56,6 +74,7 @@ public class Principal extends JFrame {
         panelSur.add(btnGraficar, BorderLayout.EAST);
 
         add(panelSur, BorderLayout.SOUTH);
+        
         
         setSize(new Dimension(500, 500));
         setLocationRelativeTo(null);

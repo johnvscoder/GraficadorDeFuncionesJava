@@ -17,8 +17,30 @@ public class Grafica extends JPanel {
 	
 	private JFrame padre;
 	
+	private int mouseX = 0, mouseY = 0;
+	private double delta = 0.1;
+	
 	public Grafica(JFrame padre) {
 		this.padre = padre;
+		addMouseMotionListener(new MouseMotionAdapter() {
+			
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				mouseX = e.getX();
+				mouseY = e.getY();
+				
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				posX -= (e.getX() - mouseX) / UNIT;
+				posY += (e.getY() - mouseY) / UNIT;
+				mouseX = e.getX();
+				mouseY = e.getY();
+				repaint();
+			}
+			
+		});
 	}
 	
 	@Override
@@ -30,7 +52,6 @@ public class Grafica extends JPanel {
 	
 		//Pintar ejes
 		g.setColor(frente);
-		
 		int ejeX = (int) (getHeight() / 2.0 + posY * zoomY * UNIT);
 		int ejeY = (int) (getWidth() / 2.0 - posX * zoomX * UNIT);
 		//Eje x
@@ -44,31 +65,62 @@ public class Grafica extends JPanel {
 		
 		int altoTexto = fm.getHeight();
 		
+		int lonX = (int) (UNIT * zoomX);
+		int lonY = (int) (UNIT * zoomY);
 		
-		int xIzquierda = (int) ((posX - getWidth() / 2.0 / UNIT) / zoomX);
-		int xDerecha = (int) ((posX + getWidth() / 2.0 / UNIT) / zoomX);
-		int yAbajo = (int) ((posY - getHeight() / 2.0 / UNIT) / zoomY);
-		int yArriba = (int) ((posY + getHeight() / 2.0 / UNIT) / zoomY);
+		int posEjeX = (int) (getHeight() / 2.0 + posY * lonY);
+		int posEjeY = (int) (getWidth() / 2.0 - posX * lonX);
 		
-		for(int i = xIzquierda; i <= xDerecha; i++) {
-			g.drawString(Integer.toString(i), (int) (getWidth() / 2.0 + (posX + i) * zoomX * UNIT), ejeX);
+		int xIzquierda = (int) (-posEjeY / (lonX));
+		int xDerecha = (int) ((getWidth() - posEjeY) / (lonX));
+		int yArriba = (int) (posEjeX / (lonY));
+		int yAbajo = (int) (-(getHeight() - posEjeX) / (lonY));
+
+		for(int i = xIzquierda; i <= xDerecha; i++)
+			g.drawString(Integer.toString(i), (int) (posEjeY + i * lonX), posEjeX);
+		for(int i = yAbajo; i <= yArriba; i++)
+			g.drawString(Integer.toString(i), posEjeY, (int) (posEjeX - i * lonY));
+		
+		
+		if(Principal.funcion.equals(""))
+			return;
+		//Graficar la funcion
+		for(double xi = xIzquierda; xi <= xDerecha; xi += delta) {
+			double xi_1 = xi;
+			double xi_2 = xi_1 + delta * zoomX;
+			
+			try {
+				double fxi_1 = Calculator.f(Principal.funcion, xi_1);
+				double fxi_2 = Calculator.f(Principal.funcion, xi_2);
+				double calcX = getWidth() / 2.0 - posX * UNIT * zoomX;
+				double calcY = getHeight() / 2.0 + posY * UNIT * zoomY;
+				
+				g.drawLine((int) (calcX + xi_1 * UNIT * zoomX), 
+						(int) (calcY - fxi_1 * UNIT * zoomY),
+						(int) (calcX + xi_2 * UNIT * zoomX), 
+						(int) (calcY - fxi_2 * UNIT * zoomY));
+			} catch(Exception e) {
+				continue;
+			}
+			
+			
+			
+//			g.drawLine((int) (getWidth() / 2.0 + (-posX + xi_1) * UNIT * zoomX), 
+//					(int) (getHeight() / 2.0 + (posY - fxi_1) * UNIT * zoomY),
+//					(int) (getWidth() / 2.0 + (-posX + xi_2) * UNIT * zoomX), 
+//					(int) (getHeight() / 2.0 + (posY - fxi_2) * UNIT * zoomY));
 		}
-		for(int i = yAbajo; i <= yArriba; i++) {
-			g.drawString(Integer.toString(i), ejeY, (int) (getHeight() / 2.0 - (posY + i) * zoomY * UNIT));
-		}
 		
-		
-//		g.drawRect(0, (int) (getHeight() / 2.0 + posY * zoomY), 
-//				getWidth(), (int) (getHeight() / 2.0 + posY * zoomY));
-//		//Eje y
-//		g.drawRect((int) (getWidth() / 2.0 - posX * zoomX), 0,
-//				(int) (getWidth() / 2.0 - posX * zoomX), getHeight());
 
 		
-
 		
 		
-		
+	}
+	
+	public void aumentarZoom(double aumentoZoom) {
+		zoomX += aumentoZoom;
+		zoomY += aumentoZoom;
+		delta = 0.1 / zoomX;
 	}
 
 }
