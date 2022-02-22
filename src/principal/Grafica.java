@@ -15,12 +15,12 @@ public class Grafica extends JPanel {
 	final double UNIT = 30.0; //Cantidad de pixeles iguales a 1 unidad
 	Color frente = Color.BLACK, fondo = Color.WHITE;
 	
-	private JFrame padre;
+	private Principal padre;
 	
 	private int mouseX = 0, mouseY = 0;
-	private double delta = 0.1;
+	private double delta = 0.2;
 	
-	public Grafica(JFrame padre) {
+	public Grafica(Principal padre) {
 		this.padre = padre;
 		addMouseMotionListener(new MouseMotionAdapter() {
 			
@@ -61,37 +61,40 @@ public class Grafica extends JPanel {
 		g.drawLine(ejeY, 0,
 				ejeY, getHeight());
 		
-		FontMetrics fm = g.getFontMetrics();
-		
-		int altoTexto = fm.getHeight();
-		
 		int lonX = (int) (UNIT * zoomX);
 		int lonY = (int) (UNIT * zoomY);
 		
-		int posEjeX = (int) (getHeight() / 2.0 + posY * lonY);
-		int posEjeY = (int) (getWidth() / 2.0 - posX * lonX);
-		
-		int xIzquierda = (int) (-posEjeY / (lonX));
-		int xDerecha = (int) ((getWidth() - posEjeY) / (lonX));
-		int yArriba = (int) (posEjeX / (lonY));
-		int yAbajo = (int) (-(getHeight() - posEjeX) / (lonY));
+		int xIzquierda = (int) (-ejeY / (lonX));
+		int xDerecha = (int) ((getWidth() - ejeY) / (lonX));
+		int yArriba = (int) (ejeX / (lonY));
+		int yAbajo = (int) (-(getHeight() - ejeX) / (lonY));
 
 		for(int i = xIzquierda; i <= xDerecha; i++)
-			g.drawString(Integer.toString(i), (int) (posEjeY + i * lonX), posEjeX);
+			g.drawString(Integer.toString(i), (int) (ejeY + i * lonX), ejeX);
 		for(int i = yAbajo; i <= yArriba; i++)
-			g.drawString(Integer.toString(i), posEjeY, (int) (posEjeX - i * lonY));
+			g.drawString(Integer.toString(i), ejeY, (int) (ejeX - i * lonY));
 		
+		JPanel listaFunciones = padre.getListaFunciones();
+		Component[] funciones = listaFunciones.getComponents();
+		for(Component f: funciones) {
+			Funcion funcion = (Funcion) f;
+			graficarFuncion(funcion, g, xIzquierda, xDerecha);
+		}
 		
-		if(Principal.funcion.equals(""))
-			return;
+	}
+
+	public void graficarFuncion(Funcion funcion, Graphics g, double xIzquierda, double xDerecha) {
+		g.setColor(funcion.getColor());
+		String funcionTexto = funcion.getFuncion();
+		
 		//Graficar la funcion
 		for(double xi = xIzquierda; xi <= xDerecha; xi += delta) {
 			double xi_1 = xi;
 			double xi_2 = xi_1 + delta * zoomX;
 			
 			try {
-				double fxi_1 = Calculator.f(Principal.funcion, xi_1);
-				double fxi_2 = Calculator.f(Principal.funcion, xi_2);
+				double fxi_1 = Calculator.f(funcionTexto, xi_1);
+				double fxi_2 = Calculator.f(funcionTexto, xi_2);
 				double calcX = getWidth() / 2.0 - posX * UNIT * zoomX;
 				double calcY = getHeight() / 2.0 + posY * UNIT * zoomY;
 				
@@ -102,25 +105,13 @@ public class Grafica extends JPanel {
 			} catch(Exception e) {
 				continue;
 			}
-			
-			
-			
-//			g.drawLine((int) (getWidth() / 2.0 + (-posX + xi_1) * UNIT * zoomX), 
-//					(int) (getHeight() / 2.0 + (posY - fxi_1) * UNIT * zoomY),
-//					(int) (getWidth() / 2.0 + (-posX + xi_2) * UNIT * zoomX), 
-//					(int) (getHeight() / 2.0 + (posY - fxi_2) * UNIT * zoomY));
 		}
-		
-
-		
-		
-		
 	}
 	
 	public void aumentarZoom(double aumentoZoom) {
 		zoomX += aumentoZoom;
 		zoomY += aumentoZoom;
-		delta = 0.1 / zoomX;
+		delta = 0.2 / zoomX;
 	}
 
 }

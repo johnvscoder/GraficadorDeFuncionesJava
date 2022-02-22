@@ -4,18 +4,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import matematicas.*;
-
 public class Principal extends JFrame {
-
-    public static String funcion = "";
 
     private Grafica grafica;
     private JButton btnZoomMas, btnZoomMenos;
-    private JTextField txtEntrada;
     private JButton btnGraficar;
     
-    private JList funciones;
+    private JPanel jpFunciones;
+    private JButton btnAgregarFuncion;
+
+    public static void main(String[] args) {
+        new Principal();
+    }
 
     public Principal() {
     	setLayout(new BorderLayout());
@@ -54,29 +54,47 @@ public class Principal extends JFrame {
         panel.add(panelZoom, JLayeredPane.PALETTE_LAYER);
         
         add(panel, BorderLayout.CENTER);
-        
-        
-        txtEntrada = new JTextField();
+
+        JPanel panelFunciones = new JPanel();
+        panelFunciones.setLayout(new BorderLayout());
+
+        jpFunciones = new JPanel();
+        jpFunciones.setLayout(new BoxLayout(jpFunciones, BoxLayout.Y_AXIS));
+        btnAgregarFuncion = new JButton("Nueva función");
+        btnAgregarFuncion.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Funcion funcion = new Funcion(Color.BLUE, Principal.this);
+                jpFunciones.add(funcion);
+                jpFunciones.updateUI();
+                jpFunciones.repaint();
+            }
+        });
         btnGraficar = new JButton("Graficar");
         btnGraficar.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                funcion = txtEntrada.getText();
                 grafica.repaint();      
             }
         });
 
-        JPanel panelSur = new JPanel();
-        panelSur.setLayout(new BorderLayout());
+        JPanel panelBotonesFunciones = new JPanel();
+        panelBotonesFunciones.add(btnGraficar);
+        panelBotonesFunciones.add(btnAgregarFuncion);
 
-        panelSur.add(txtEntrada, BorderLayout.CENTER);
-        panelSur.add(btnGraficar, BorderLayout.EAST);
 
-        add(panelSur, BorderLayout.SOUTH);
+        panelFunciones.add(panelBotonesFunciones, BorderLayout.SOUTH);
+
+        JPanel subpanelListaFunciones = new JPanel();
+        subpanelListaFunciones.setLayout(new BorderLayout());
+        subpanelListaFunciones.add(jpFunciones, BorderLayout.NORTH);
+        JScrollPane scrollListaFunciones = new JScrollPane(subpanelListaFunciones);
+        panelFunciones.add(scrollListaFunciones, BorderLayout.CENTER);
+        add(panelFunciones, BorderLayout.EAST);
         
-        
-        setSize(new Dimension(500, 500));
+        setSize(new Dimension(800, 600));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       
@@ -84,9 +102,13 @@ public class Principal extends JFrame {
         
         setVisible(true);
     }
-    
-    public static void main(String[] args) {
-        new Principal();
+
+    public JPanel getListaFunciones() {
+        return jpFunciones;
+    }
+
+    public Grafica getGrafica() {
+        return grafica;
     }
 
 }
