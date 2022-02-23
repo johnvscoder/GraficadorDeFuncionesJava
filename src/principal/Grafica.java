@@ -81,6 +81,8 @@ public class Grafica extends JPanel {
 			graficarFuncion(funcion, g, xIzquierda, xDerecha);
 		}
 		
+		g.setColor(frente);
+		g.drawString("Zoom: " + (zoomX * 100), 70, 20);
 	}
 
 	public void graficarFuncion(Funcion funcion, Graphics g, double xIzquierda, double xDerecha) {
@@ -97,6 +99,10 @@ public class Grafica extends JPanel {
 				double fxi_2 = Calculator.f(funcionTexto, xi_2);
 				double calcX = getWidth() / 2.0 - posX * UNIT * zoomX;
 				double calcY = getHeight() / 2.0 + posY * UNIT * zoomY;
+
+				double distancia = Math.sqrt((xi_1 - xi_2) * (xi_1 - xi_2) + (fxi_1 - fxi_2) * (fxi_1 - fxi_2));
+				if(distancia >= 10)
+					continue;
 				
 				g.drawLine((int) (calcX + xi_1 * UNIT * zoomX), 
 						(int) (calcY - fxi_1 * UNIT * zoomY),
@@ -109,9 +115,19 @@ public class Grafica extends JPanel {
 	}
 	
 	public void aumentarZoom(double aumentoZoom) {
+		if(zoomX <= 1 && aumentoZoom < 0)
+			return;
 		zoomX += aumentoZoom;
 		zoomY += aumentoZoom;
 		delta = 0.2 / zoomX;
+	}
+
+	public void setPosX(double posX) {
+		this.posX = posX;
+	}
+
+	public double getUNIT() {
+		return UNIT;
 	}
 
 }

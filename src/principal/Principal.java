@@ -98,7 +98,7 @@ public class Principal extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       
-        grafica.setSize(getSize());
+        grafica.setSize(new Dimension(600, 600));
         
         setVisible(true);
     }

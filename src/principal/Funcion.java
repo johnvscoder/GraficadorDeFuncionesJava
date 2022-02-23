@@ -14,7 +14,7 @@ public class Funcion extends JPanel {
     public Funcion(Color color, Principal ventana) {
         this.funcion = new JTextField(10);
         this.color = color;
-        btnColor = new JButton();
+        btnColor = new JButton(" ");
         btnColor.setBackground(color);
         btnColor.addActionListener(new ActionListener() {
 
